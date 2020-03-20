@@ -23,11 +23,7 @@ switch (command) {
         ))
         break
     case 'edit':
-        try {
-            list[index]['content'] = content
-        } catch (error) {
-            console.log('你输入的命令有误')
-        }
+        list[index]['content'] = content
         break
     case 'ok':
         list[content - 1].isComplete = true
@@ -36,7 +32,6 @@ switch (command) {
         list.splice(content - 1, 1)
         break
     case 'clear':
-        console.log('clear', filePath)
         fs.unlinkSync(filePath)
         break
     default:
@@ -44,7 +39,7 @@ switch (command) {
         break
 }
 
-if (command === 'add' && 'edit' && 'ok' && 'delete') {
+if (command !== 'clear' && command !== 'ls') {
     write(filePath, JSON.stringify(list))
 }
 
@@ -52,10 +47,8 @@ if (command === 'add' && 'edit' && 'ok' && 'delete') {
 function initDb() {
     if (fs.existsSync(filePath)) {
         list = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-        console.log('list init', list)
     } else {
         write(filePath, '')
-        console.log('不存在', list)
     }
 }
 
